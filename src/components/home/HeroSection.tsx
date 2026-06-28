@@ -20,7 +20,7 @@ export default function HeroSection() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ paddingTop: 64, minHeight: "calc(100svh - 64px)", background: "#09090F" }}
+      style={{ paddingTop: 64, height: "100svh", minHeight: 600, maxHeight: 920, background: "#09090F" }}
     >
 
       {/* ── Full-bleed background image ── */}
