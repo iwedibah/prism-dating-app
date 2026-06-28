@@ -6,12 +6,18 @@ import MobileHeader from "@/components/app/MobileHeader";
 import CreatePost from "@/components/feed/CreatePost";
 import PostCard from "@/components/feed/PostCard";
 import StoriesRow from "@/components/feed/StoriesRow";
-import { Loader2, Users, Clock, Crown, Zap, UserPlus } from "lucide-react";
+import FeedFeatureStrip from "@/components/feed/FeedFeatureStrip";
+import ProfileCompletionBanner from "@/components/feed/ProfileCompletionBanner";
+import { Loader2, Clock, Crown, Zap, UserPlus, MapPin, Video, Radio, Heart, Globe, Users, EyeOff, Shield } from "lucide-react";
+import Link from "next/link";
 
 type Profile = {
   id: string; full_name: string; email: string;
-  avatar_url: string | null; sexuality: string | null;
-  role: string; plan: string; subscribed: boolean; trial_start: string | null;
+  avatar_url: string | null; photo_url: string | null;
+  sexuality: string | null; role: string; plan: string;
+  subscribed: boolean; trial_start: string | null;
+  bio: string | null; city: string | null; country: string | null;
+  setup_done: boolean | null;
 };
 
 type Post = {
@@ -54,6 +60,16 @@ const ONLINE_AVATARS = [
   { name: "Kemi", color: "#00D4FF" },
   { name: "Alex", color: "#FFD700" },
   { name: "Bola", color: "#B39DDB" },
+];
+
+const SIDEBAR_FEATURES = [
+  { icon: Heart,  label: "Smart Matching",  desc: "Filter by identity, distance & vibe", href: "/discover", color: "var(--prism-magenta)" },
+  { icon: Radio,  label: "Go Live",         desc: "Broadcast to your followers",         href: "/live",     color: "#ff4444" },
+  { icon: Globe,  label: "Passport Mode",   desc: "Connect before you travel",           href: "/passport", color: "var(--prism-gold)" },
+  { icon: Video,  label: "Video Chat",      desc: "Face-to-face — no third-party app",   href: "/chat",     color: "var(--prism-coral)" },
+  { icon: Users,  label: "Communities",     desc: "Groups by city, identity & interest", href: "/discover", color: "var(--prism-lavender)" },
+  { icon: EyeOff, label: "Ghost Radius",    desc: "Fuzzy location — never exact",        href: "/profile",  color: "#9C27B0" },
+  { icon: Shield, label: "Panic Button",    desc: "One tap hides your profile",          href: "/profile",  color: "#E91E63" },
 ];
 
 type FeedTab = "forYou" | "following";
@@ -107,6 +123,11 @@ export default function FeedPage() {
     );
   }
 
+  const hasPhoto    = !!(profile?.photo_url || profile?.avatar_url);
+  const hasBio      = !!profile?.bio?.trim();
+  const hasLocation = !!profile?.city?.trim();
+  const setupDone   = profile?.setup_done ?? false;
+
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
       {/* Desktop sidebar */}
@@ -122,7 +143,7 @@ export default function FeedPage() {
         notifCount={0}
       />
 
-      {/* Content — pt-14 on mobile for fixed header, pl-60 on desktop for sidebar */}
+      {/* Content */}
       <div className="md:pl-60 pt-14 md:pt-0 pb-20 md:pb-6">
         <div className="max-w-5xl mx-auto px-3 sm:px-5 py-4 md:py-6 flex gap-5">
 
@@ -133,7 +154,7 @@ export default function FeedPage() {
             <div className="md:hidden mb-4">
               <h1 className="text-2xl font-bold" style={{ fontFamily: "Space Grotesk, sans-serif" }}>News Feed</h1>
               <p className="text-sm mt-0.5" style={{ color: "var(--text-muted)" }}>
-                Posts, updates and moments from your community
+                Posts and moments from your community
               </p>
             </div>
 
@@ -142,13 +163,29 @@ export default function FeedPage() {
               <h1 className="text-xl font-bold" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
                 Welcome back, {profile?.full_name?.split(" ")[0]} 👋
               </h1>
-              <p className="text-sm mt-0.5" style={{ color: "var(--text-muted)" }}>
+              <p className="text-sm mt-0.5 flex items-center gap-1.5" style={{ color: "var(--text-muted)" }}>
+                {hasLocation && (
+                  <><MapPin size={12} style={{ color: "var(--prism-cyan)" }} />
+                  {profile?.city}, {profile?.country} · </>
+                )}
                 {onlineCount} people online near you right now
               </p>
             </div>
 
+            {/* Profile completion banner — shown if setup not done */}
+            {!setupDone && (
+              <ProfileCompletionBanner
+                hasPhoto={hasPhoto}
+                hasBio={hasBio}
+                hasLocation={hasLocation}
+              />
+            )}
+
             {/* Stories */}
             {profile && <StoriesRow profile={{ id: profile.id, full_name: profile.full_name }} />}
+
+            {/* Feature discovery strip */}
+            <FeedFeatureStrip />
 
             {/* Trial banner */}
             <TrialBanner trialStart={profile?.trial_start ?? null} />
@@ -192,9 +229,9 @@ export default function FeedPage() {
                 <p className="text-sm" style={{ color: "var(--text-muted)" }}>
                   Go to Discover to find and follow people near you.
                 </p>
-                <a href="/discover" className="btn-primary inline-block mt-4 px-6 py-2.5 text-sm">
+                <Link href="/discover" className="btn-primary inline-block mt-4 px-6 py-2.5 text-sm">
                   Open Discover
-                </a>
+                </Link>
               </div>
             ) : posts.length === 0 ? (
               <div className="text-center py-16 rounded-2xl"
@@ -223,6 +260,7 @@ export default function FeedPage() {
 
           {/* ── Right sidebar (desktop only) ── */}
           <aside className="hidden lg:flex flex-col w-72 flex-shrink-0 gap-4">
+
             {/* Online now */}
             <div className="rounded-2xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
               <div className="flex items-center justify-between mb-3">
@@ -247,19 +285,39 @@ export default function FeedPage() {
                   </div>
                 ))}
               </div>
-              <a href="/discover" className="mt-4 w-full btn-primary py-2 text-sm text-center block">
+              <Link href="/discover" className="mt-4 w-full btn-primary py-2 text-sm text-center block">
                 Open Discover →
-              </a>
+              </Link>
+            </div>
+
+            {/* PRISM Features — sidebar */}
+            <div className="rounded-2xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-3 gradient-text">What PRISM Can Do</p>
+              <div className="space-y-3">
+                {SIDEBAR_FEATURES.map(({ icon: Icon, label, desc, href, color }) => (
+                  <Link key={label} href={href}
+                    className="flex items-start gap-2.5 group hover:opacity-80 transition-all">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{ background: `${color}22` }}>
+                      <Icon size={13} style={{ color }} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold">{label}</p>
+                      <p className="text-[10px] leading-tight" style={{ color: "var(--text-muted)" }}>{desc}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
 
             {/* People you may know */}
             <div className="rounded-2xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
               <h3 className="text-sm font-semibold mb-3">People You May Know</h3>
               {[
-                { name: "Chioma A.", color: "#C2185B" },
-                { name: "Marcus T.", color: "#6A0DAD" },
-                { name: "Priya K.",  color: "#00D4FF" },
-              ].map(({ name, color }) => (
+                { name: "Chioma A.", color: "#C2185B", loc: "Lagos" },
+                { name: "Marcus T.", color: "#6A0DAD", loc: "London" },
+                { name: "Priya K.",  color: "#00D4FF", loc: "Abuja" },
+              ].map(({ name, color, loc }) => (
                 <div key={name} className="flex items-center gap-2.5 mb-3">
                   <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
                     style={{ background: color }}>
@@ -267,7 +325,9 @@ export default function FeedPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{name}</p>
-                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>2 mutual connections</p>
+                    <p className="text-xs flex items-center gap-1" style={{ color: "var(--text-muted)" }}>
+                      <MapPin size={9} /> {loc}
+                    </p>
                   </div>
                   <button className="btn-outline px-3 py-1 text-xs">Connect</button>
                 </div>
@@ -296,7 +356,6 @@ export default function FeedPage() {
 
         </div>
       </div>
-
     </div>
   );
 }

@@ -100,7 +100,7 @@ export default function SignupPage() {
     }
 
     setLoading(false);
-    router.push("/feed");
+    router.push("/profile/setup");
   }
 
   return (
