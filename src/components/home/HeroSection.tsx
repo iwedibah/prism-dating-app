@@ -19,8 +19,8 @@ const identities = [
 export default function HeroSection() {
   return (
     <section
-      className="relative flex items-center overflow-hidden mesh-bg"
-      style={{ height: "88svh", minHeight: 580, maxHeight: 880 }}
+      className="relative flex flex-col overflow-hidden mesh-bg"
+      style={{ height: "88svh", minHeight: 580, maxHeight: 880, paddingTop: 64 }}
     >
       {/* ── Globe image — full bleed background ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
@@ -70,11 +70,8 @@ export default function HeroSection() {
       </div>
 
       {/* ── Content ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8">
-        {/* Navbar spacer */}
-        <div className="h-16 lg:h-20" />
-
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
+      <div className="relative z-10 flex-1 flex items-center w-full max-w-7xl mx-auto px-5 sm:px-8">
+        <div className="w-full grid lg:grid-cols-2 gap-8 items-center py-8">
 
           {/* LEFT — Text column */}
           <div className="flex flex-col justify-center">
