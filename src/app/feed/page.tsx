@@ -4,7 +4,8 @@ import { createClient } from "@/lib/supabase/client";
 import AppNav from "@/components/app/AppNav";
 import CreatePost from "@/components/feed/CreatePost";
 import PostCard from "@/components/feed/PostCard";
-import { Loader2, Users, Clock, Crown } from "lucide-react";
+import StoriesRow from "@/components/feed/StoriesRow";
+import { Loader2, Users, Clock, Crown, Zap } from "lucide-react";
 
 type Profile = {
   id: string; full_name: string; email: string;
@@ -26,31 +27,34 @@ function TrialBanner({ trialStart }: { trialStart: string | null }) {
   const daysLeft = Math.max(0, 7 - daysPassed);
   if (daysLeft === 0) return null;
   return (
-    <div className="rounded-2xl p-4 mb-4 flex items-center justify-between"
-      style={{ background: "rgba(255,215,0,0.08)", border: "1px solid rgba(255,215,0,0.2)" }}>
-      <div className="flex items-center gap-2.5">
-        <Clock size={16} style={{ color: "#FFD700" }} />
+    <div className="rounded-2xl p-4 mb-4 flex items-center justify-between gap-3"
+      style={{ background: "rgba(255,215,0,0.07)", border: "1px solid rgba(255,215,0,0.18)" }}>
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+          style={{ background: "rgba(255,215,0,0.15)" }}>
+          <Clock size={15} style={{ color: "#FFD700" }} />
+        </div>
         <div>
           <p className="text-sm font-semibold" style={{ color: "#FFD700" }}>
-            {daysLeft} day{daysLeft !== 1 ? "s" : ""} left in your trial
+            {daysLeft} day{daysLeft !== 1 ? "s" : ""} left on your free trial
           </p>
-          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Add payment to keep access</p>
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>Add payment to keep full access after Day 8</p>
         </div>
       </div>
-      <button className="px-3 py-1.5 rounded-xl text-xs font-semibold"
-        style={{ background: "rgba(255,215,0,0.2)", color: "#FFD700" }}>
-        Upgrade
-      </button>
+      <button className="btn-primary px-4 py-1.5 text-xs whitespace-nowrap">Upgrade</button>
     </div>
   );
 }
+
+const ONLINE_AVATARS = ["Ade", "Sam", "Temi", "Kemi", "Alex", "Bola"];
+const AVATAR_COLORS = ["#6A0DAD", "#C2185B", "#FF6D3B", "#00D4FF", "#FFD700", "#B39DDB"];
 
 export default function FeedPage() {
   const supabase = createClient();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [onlineCount] = useState(Math.floor(Math.random() * 40) + 12);
+  const onlineCount = 24;
 
   const fetchPosts = useCallback(async () => {
     const { data } = await supabase
@@ -78,40 +82,41 @@ export default function FeedPage() {
     init();
   }, []);
 
-  function removePost(id: string) {
-    setPosts(p => p.filter(post => post.id !== id));
-  }
+  function removePost(id: string) { setPosts(p => p.filter(post => post.id !== id)); }
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)" }}>
-        <Loader2 size={28} className="animate-spin" style={{ color: "var(--prism-purple)" }} />
+        <div className="text-center">
+          <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-3">
+            <Loader2 size={22} className="animate-spin text-white" />
+          </div>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>Loading your feed…</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>
-      <AppNav isAdmin={profile?.role === "admin"} />
+      <AppNav
+        isAdmin={profile?.role === "admin"}
+        profile={profile ? { full_name: profile.full_name, sexuality: profile.sexuality } : null}
+      />
 
-      {/* Layout */}
-      <div className="md:pl-60 pb-20 md:pb-0">
-        <div className="max-w-5xl mx-auto px-4 py-6 flex gap-6">
+      <div className="md:pl-60 pb-20 md:pb-6">
+        <div className="max-w-5xl mx-auto px-3 sm:px-5 py-5 flex gap-5">
 
-          {/* ── Main feed ── */}
+          {/* ── Centre feed ── */}
           <main className="flex-1 min-w-0">
-            {/* Welcome banner */}
-            <div className="mb-5">
-              <h1 className="text-xl font-bold" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
-                Welcome back, {profile?.full_name?.split(" ")[0]} 👋
-              </h1>
-              <p className="text-sm mt-0.5" style={{ color: "var(--text-muted)" }}>
-                {onlineCount} people online near you right now
-              </p>
-            </div>
 
+            {/* Stories */}
+            {profile && <StoriesRow profile={{ id: profile.id, full_name: profile.full_name }} />}
+
+            {/* Trial banner */}
             <TrialBanner trialStart={profile?.trial_start ?? null} />
 
+            {/* Post composer */}
             {profile && (
               <CreatePost
                 profile={{ id: profile.id, full_name: profile.full_name, avatar_url: profile.avatar_url }}
@@ -119,62 +124,106 @@ export default function FeedPage() {
               />
             )}
 
-            {posts.length === 0 && (
-              <div className="text-center py-16">
-                <p className="text-4xl mb-3">🌈</p>
-                <p className="font-semibold mb-1">No posts yet</p>
-                <p className="text-sm" style={{ color: "var(--text-muted)" }}>Be the first to share something!</p>
+            {/* Posts */}
+            {posts.length === 0 ? (
+              <div className="text-center py-16 rounded-2xl"
+                style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
+                <div className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-4">
+                  <Zap size={28} className="text-white" />
+                </div>
+                <p className="font-bold text-lg mb-1" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                  Be the first to post
+                </p>
+                <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+                  Share what&apos;s on your mind — your community is waiting.
+                </p>
               </div>
+            ) : (
+              posts.map(post => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  currentUserId={profile?.id ?? ""}
+                  onDelete={removePost}
+                />
+              ))
             )}
-
-            {posts.map(post => (
-              <PostCard
-                key={post.id}
-                post={post}
-                currentUserId={profile?.id ?? ""}
-                onDelete={removePost}
-              />
-            ))}
           </main>
 
           {/* ── Right sidebar ── */}
-          <aside className="hidden lg:block w-72 flex-shrink-0">
+          <aside className="hidden lg:flex flex-col w-72 flex-shrink-0 gap-4">
+
             {/* Online now */}
-            <div className="prism-card p-4 mb-4" style={{ background: "var(--bg-surface)" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <div className="rounded-2xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
+              <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold">Online Now</h3>
-                <span className="ml-auto text-xs px-2 py-0.5 rounded-full"
-                  style={{ background: "rgba(0,200,100,0.15)", color: "#00c864" }}>
-                  {onlineCount} active
-                </span>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span className="text-xs font-medium" style={{ color: "#00c864" }}>{onlineCount} active</span>
+                </div>
               </div>
-              <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                People near you are active. Go to Discover to find them.
-              </p>
-              <a href="/discover" className="btn-primary w-full mt-3 py-2 text-sm text-center block">
-                Open Discover
+              <div className="space-y-2.5">
+                {ONLINE_AVATARS.map((name, i) => (
+                  <div key={name} className="flex items-center gap-2.5 cursor-pointer group">
+                    <div className="relative flex-shrink-0">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                        style={{ background: AVATAR_COLORS[i] }}>
+                        {name[0]}
+                      </div>
+                      <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-400 border-2"
+                        style={{ borderColor: "var(--bg-surface)" }} />
+                    </div>
+                    <span className="text-sm group-hover:gradient-text transition-all" style={{ color: "var(--text-muted)" }}>
+                      {name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <a href="/discover"
+                className="mt-4 w-full btn-primary py-2 text-sm text-center block">
+                Open Discover →
               </a>
             </div>
 
-            {/* Plan status */}
-            <div className="prism-card p-4" style={{ background: "var(--bg-surface)" }}>
+            {/* Suggested */}
+            <div className="rounded-2xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
+              <h3 className="text-sm font-semibold mb-3">People You May Know</h3>
+              {["Chioma A.", "Marcus T.", "Priya K."].map((name, i) => (
+                <div key={name} className="flex items-center gap-2.5 mb-3">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+                    style={{ background: AVATAR_COLORS[(i + 3) % 6] }}>
+                    {name[0]}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{name}</p>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>2 mutual connections</p>
+                  </div>
+                  <button className="btn-outline px-3 py-1 text-xs">Connect</button>
+                </div>
+              ))}
+            </div>
+
+            {/* Plan */}
+            <div className="rounded-2xl p-4" style={{ background: "var(--bg-surface)", border: "1px solid var(--border)" }}>
               <div className="flex items-center gap-2 mb-3">
                 <Crown size={15} style={{ color: "#FFD700" }} />
                 <h3 className="text-sm font-semibold">Your Plan</h3>
               </div>
               {profile?.subscribed ? (
-                <p className="text-sm" style={{ color: "#FFD700" }}>✨ Premium — full access</p>
+                <p className="text-sm font-medium" style={{ color: "#FFD700" }}>✨ PRISM Premium — full access</p>
               ) : (
                 <>
-                  <p className="text-sm mb-1">Free Trial</p>
+                  <p className="text-sm mb-1 font-medium">Free Trial</p>
                   <p className="text-xs mb-3" style={{ color: "var(--text-muted)" }}>
-                    Upgrade to unlock Passport, Go Live, and unlimited matches.
+                    Unlock Passport Mode, Go Live, and unlimited matches.
                   </p>
-                  <button className="btn-primary w-full py-2 text-sm">Upgrade — ₦5,000 / £8</button>
+                  <button className="btn-primary w-full py-2 text-sm">
+                    Upgrade — ₦5,000 / £8/qtr
+                  </button>
                 </>
               )}
             </div>
+
           </aside>
         </div>
       </div>
