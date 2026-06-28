@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ============================================================
+   PRISM — CSS Custom Properties
+   ============================================================ */
+:root {
+  --prism-purple:   #6A0DAD;
+  --prism-magenta:  #C2185B;
+  --prism-coral:    #FF6D3B;
+  --prism-cyan:     #00D4FF;
+  --prism-gold:     #FFD700;
+  --prism-lavender: #B39DDB;
+
+  --bg-primary:   #09090F;
+  --bg-surface:   #13131F;
+  --bg-elevated:  #1E1E2E;
+  --text-primary: #F0F0FF;
+  --text-muted:   #7A7A9A;
+  --border:       rgba(179, 157, 219, 0.12);
+  --border-subtle:rgba(255, 255, 255, 0.05);
+
+  --gradient:          linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+  --gradient-subtle:   rgba(106,13,173,0.12);
+  --gradient-text-val: linear-gradient(135deg, #B06EE8 0%, #E91E8C 50%, #FF8C5A 100%);
+
+  --glow-purple:  rgba(106, 13, 173, 0.35);
+  --glow-magenta: rgba(194, 24, 91, 0.35);
+  --glow-cyan:    rgba(0, 212, 255, 0.35);
+}
+
+[data-theme="light"] {
+  --bg-primary:   #F8F7FF;
+  --bg-surface:   #FFFFFF;
+  --bg-elevated:  #EDE8FF;
+  --text-primary: #1A1A2E;
+  --text-muted:   #6B6B8A;
+  --border:       rgba(106, 13, 173, 0.12);
+  --border-subtle:rgba(0, 0, 0, 0.05);
+  --gradient-text-val: linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+}
+
+/* ============================================================
+   BASE RESET
+   ============================================================ */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6A0DAD, #C2185B);
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: rgba(194, 24, 91, 0.25);
+    color: #fff;
+  }
+}
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+}
+
+/* ============================================================
+   COMPONENT CLASSES
+   ============================================================ */
+@layer components {
+
+  .gradient-text {
+    background-image: linear-gradient(135deg, #B06EE8 0%, #E91E8C 50%, #FF8C5A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
+  [data-theme="light"] .gradient-text {
+    background-image: linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+  }
+
+  .gradient-bg {
+    background-image: linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+  }
+
+  .gradient-bg-subtle {
+    background-color: rgba(106,13,173,0.12);
+  }
+
+  .glass {
+    background-color: rgba(19, 19, 31, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+  }
+
+  [data-theme="light"] .glass {
+    background-color: rgba(248, 247, 255, 0.85) !important;
+    border-color: rgba(106, 13, 173, 0.1) !important;
+  }
+
+  .mesh-bg {
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% -10%, rgba(106,13,173,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(194,24,91,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 60% 50%, rgba(255,109,59,0.06) 0%, transparent 50%);
+    background-color: var(--bg-primary);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(circle, rgba(179,157,219,0.15) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  [data-theme="light"] .dot-grid {
+    background-image: radial-gradient(circle, rgba(106,13,173,0.08) 1px, transparent 1px);
+  }
+
+  .prism-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .prism-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(106, 13, 173, 0.15);
+  }
+
+  .gradient-border {
+    position: relative;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background-image: linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .btn-primary {
+    background-image: linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+    background-color: #6A0DAD;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(194, 24, 91, 0.35);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 32px rgba(194, 24, 91, 0.5);
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-outline:hover {
+    border-color: #C2185B;
+    background-color: rgba(194, 24, 91, 0.06);
+  }
+
+  .prism-input {
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .prism-input::placeholder { color: var(--text-muted); }
+
+  .prism-input:focus {
+    border-color: #C2185B;
+    box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.15);
+  }
+
+  [data-theme="light"] .prism-input {
+    background-color: #ffffff;
+    border-color: rgba(106, 13, 173, 0.15);
+  }
+
+  .live-badge {
+    background-color: #FF0040;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .prism-ring {
+    background-image: linear-gradient(135deg, #6A0DAD 0%, #C2185B 50%, #FF6D3B 100%);
+    padding: 2px;
+    border-radius: 9999px;
+  }
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+@layer utilities {
+  .glow-purple  { box-shadow: 0 0 30px rgba(106, 13, 173, 0.35); }
+  .glow-magenta { box-shadow: 0 0 30px rgba(194, 24, 91, 0.35); }
+  .glow-cyan    { box-shadow: 0 0 30px rgba(0, 212, 255, 0.35); }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+  .animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+}
+
+/* ============================================================
+   KEYFRAMES (outside layers — global scope)
+   ============================================================ */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(194, 24, 91, 0.4); }
+  50%       { box-shadow: 0 0 0 10px rgba(194, 24, 91, 0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
