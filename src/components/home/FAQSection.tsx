@@ -121,17 +121,17 @@ export default function FAQSection() {
           </h2>
         </motion.div>
 
-        {/* Two-column: image left, FAQ right */}
+        {/* Two-column: image left, FAQ right — image hidden on mobile */}
         <div className="grid lg:grid-cols-[1fr_1.35fr] gap-10 items-start">
 
-          {/* LEFT — globe image */}
+          {/* LEFT — globe image (desktop only) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="relative rounded-3xl overflow-hidden sticky top-24"
-            style={{ minHeight: 380 }}
+            className="relative rounded-3xl overflow-hidden sticky top-24 hidden lg:block"
+            style={{ minHeight: 420 }}
           >
             <Image
               src="/images/globe-faq.png"
@@ -183,7 +183,7 @@ export default function FAQSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="grid sm:grid-cols-2 gap-3 items-start"
+            className="grid md:grid-cols-2 gap-3 items-start lg:col-span-1 col-span-full"
           >
             {/* Column 1 */}
             <div className="flex flex-col gap-3">
