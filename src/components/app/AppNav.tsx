@@ -129,26 +129,20 @@ export default function AppNav({
         </div>
       </aside>
 
-      {/* ── Mobile bottom bar ── */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t flex items-center justify-around px-2 py-2"
+      {/* ── Mobile bottom bar — 5 tabs only, theme is in MobileHeader ── */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t flex items-center justify-around px-1 py-1"
         style={{ background: "var(--bg-surface)", borderColor: "var(--border)" }}>
         {navItems.map(({ href, icon: Icon, label }) => {
           const active = pathname === href;
           return (
             <Link key={href} href={href}
-              className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all"
+              className="flex flex-col items-center gap-0.5 flex-1 py-2 rounded-xl transition-all"
               style={{ color: active ? "var(--prism-purple)" : "var(--text-muted)" }}>
-              <Icon size={20} />
+              <Icon size={21} strokeWidth={active ? 2.2 : 1.8} />
               <span className="text-[10px] font-medium">{label}</span>
             </Link>
           );
         })}
-        <button onClick={toggleTheme}
-          className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all"
-          style={{ color: "var(--text-muted)" }}>
-          {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          <span className="text-[10px] font-medium">{isDark ? "Light" : "Dark"}</span>
-        </button>
       </nav>
     </>
   );

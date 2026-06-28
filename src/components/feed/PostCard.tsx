@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2, Crown } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -93,7 +93,12 @@ export default function PostCard({
             {initials}
           </div>
           <div>
-            <p className="text-sm font-semibold">{post.profiles?.full_name || "User"}</p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-sm font-semibold">{post.profiles?.full_name || "User"}</p>
+              {(post.profiles as any)?.subscribed && (
+                <Crown size={12} style={{ color: "#FFD700", flexShrink: 0 }} title="Premium member" />
+              )}
+            </div>
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>
               {post.profiles?.sexuality && <span className="mr-1">{post.profiles.sexuality} ·</span>}
               {timeAgo(post.created_at)}
