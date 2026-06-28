@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
+import HeroStats from "@/components/home/HeroStats";
 import HowItWorks from "@/components/home/HowItWorks";
 import FeaturedListings from "@/components/home/FeaturedListings";
 import PassportSection from "@/components/home/PassportSection";
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Navbar />
       <main>
         <HeroSection />
+        <HeroStats />
         <HowItWorks />
         <FeaturedListings />
         <PassportSection />

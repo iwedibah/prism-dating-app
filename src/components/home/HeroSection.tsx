@@ -2,14 +2,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Users, Shield, Zap } from "lucide-react";
-
-const stats = [
-  { icon: Users,  label: "Inclusive",      value: "All Sexualities" },
-  { icon: MapPin, label: "Location-Aware",  value: "Live Map" },
-  { icon: Shield, label: "Privacy-First",   value: "Stealth Mode" },
-  { icon: Zap,    label: "Passport Mode",   value: "Travel Ready" },
-];
 
 const identities = [
   "Straight","Gay","Lesbian","Bisexual","Pansexual",
@@ -140,7 +132,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-3 mb-6"
+              className="flex flex-col sm:flex-row gap-3"
             >
               <Link href="/signup" className="btn-primary text-sm px-7 py-3 animate-pulse-glow text-center">
                 Start 7-Day Free Trial
@@ -148,33 +140,6 @@ export default function HeroSection() {
               <Link href="/discover" className="btn-outline text-sm px-7 py-3 text-center">
                 Browse the Map
               </Link>
-            </motion.div>
-
-            {/* Stat cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="grid grid-cols-2 gap-2.5"
-            >
-              {stats.map(({ icon: Icon, label, value }) => (
-                <div
-                  key={label}
-                  className="prism-card p-3 flex items-center gap-2.5"
-                  style={{ backdropFilter: "blur(16px)", background: "rgba(13,13,20,0.65)" }}
-                >
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                    style={{ background: "var(--gradient-subtle)" }}
-                  >
-                    <Icon size={14} style={{ color: "var(--prism-magenta)" }} />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-xs">{value}</div>
-                    <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)", fontSize: 10 }}>{label}</div>
-                  </div>
-                </div>
-              ))}
             </motion.div>
           </div>
 
