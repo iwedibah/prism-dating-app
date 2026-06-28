@@ -18,7 +18,7 @@ const identities = [
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden mesh-bg pt-16">
+    <section className="relative flex items-center overflow-hidden mesh-bg" style={{ height: "100svh", minHeight: 640, maxHeight: 960 }}>
 
       {/* ── Full-bleed hero image: fills right side, bleeds edge-to-edge ── */}
       <div
@@ -30,9 +30,10 @@ export default function HeroSection() {
           alt=""
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover"
+          quality={100}
           sizes="100vw"
-          style={{ objectPosition: "65% center" }}
+          style={{ objectPosition: "62% center" }}
         />
 
         {/* Left-to-right gradient: dark page bg → transparent → reveals globe */}
@@ -65,7 +66,7 @@ export default function HeroSection() {
 
       {/* ── Content ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5">
-        <div className="grid lg:grid-cols-2 items-center min-h-[calc(100vh-4rem)] py-20">
+        <div className="grid lg:grid-cols-2 items-center h-full py-16 pt-24">
 
           {/* LEFT — Text */}
           <div className="flex flex-col justify-center max-w-xl">
