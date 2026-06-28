@@ -55,17 +55,17 @@ export default function HeroSection() {
 
       {/* ── Content ── */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-5 sm:px-8 flex items-center">
-        <div className="w-full grid lg:grid-cols-2 items-center py-12 lg:py-16">
+        <div className="w-full grid lg:grid-cols-2 items-center py-6">
 
-          {/* LEFT — text occupies ~50%, couple on right via bg image */}
+          {/* LEFT — vertically centred, compact spacing */}
           <div className="flex flex-col justify-center max-w-lg">
 
             {/* Live pill */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-8 w-fit"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium mb-5 w-fit"
               style={{
                 background: "rgba(19,19,31,0.7)",
                 border: "1px solid var(--border)",
@@ -83,13 +83,13 @@ export default function HeroSection() {
 
             {/* Headline */}
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-bold leading-[1.08] tracking-tight mb-6"
+              className="font-bold leading-[1.06] tracking-tight mb-4"
               style={{
                 fontFamily: "Space Grotesk, sans-serif",
-                fontSize: "clamp(2.8rem, 5.5vw, 4.8rem)",
+                fontSize: "clamp(2.2rem, 4.2vw, 3.8rem)",
               }}
             >
               Every Color.
@@ -101,11 +101,11 @@ export default function HeroSection() {
 
             {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base sm:text-lg mb-6 leading-relaxed"
-              style={{ color: "var(--text-muted)", maxWidth: "36ch" }}
+              className="text-sm sm:text-base mb-4 leading-relaxed"
+              style={{ color: "var(--text-muted)", maxWidth: "38ch" }}
             >
               A social dating platform built for all sexualities. Post,
               connect, go live, and discover people near you — or in your
@@ -117,12 +117,12 @@ export default function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.28 }}
-              className="flex flex-wrap gap-2 mb-8"
+              className="flex flex-wrap gap-1.5 mb-5"
             >
               {identities.map((id) => (
                 <span
                   key={id}
-                  className="text-xs px-3 py-1.5 rounded-full"
+                  className="text-xs px-2.5 py-1 rounded-full"
                   style={{
                     background: "rgba(19,19,31,0.75)",
                     border: "1px solid var(--border)",
@@ -137,41 +137,41 @@ export default function HeroSection() {
 
             {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-4 mb-10"
+              className="flex flex-col sm:flex-row gap-3 mb-6"
             >
-              <Link href="/signup" className="btn-primary text-base px-8 py-3.5 animate-pulse-glow text-center">
+              <Link href="/signup" className="btn-primary text-sm px-7 py-3 animate-pulse-glow text-center">
                 Start 7-Day Free Trial
               </Link>
-              <Link href="/discover" className="btn-outline text-base px-8 py-3.5 text-center">
+              <Link href="/discover" className="btn-outline text-sm px-7 py-3 text-center">
                 Browse the Map
               </Link>
             </motion.div>
 
             {/* Stat cards */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="grid grid-cols-2 gap-3"
+              className="grid grid-cols-2 gap-2.5"
             >
               {stats.map(({ icon: Icon, label, value }) => (
                 <div
                   key={label}
-                  className="prism-card p-4 flex items-center gap-3"
-                  style={{ backdropFilter: "blur(16px)", background: "rgba(13,13,20,0.6)" }}
+                  className="prism-card p-3 flex items-center gap-2.5"
+                  style={{ backdropFilter: "blur(16px)", background: "rgba(13,13,20,0.65)" }}
                 >
                   <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: "var(--gradient-subtle)" }}
                   >
-                    <Icon size={16} style={{ color: "var(--prism-magenta)" }} />
+                    <Icon size={14} style={{ color: "var(--prism-magenta)" }} />
                   </div>
                   <div>
-                    <div className="font-semibold text-sm">{value}</div>
-                    <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{label}</div>
+                    <div className="font-semibold text-xs">{value}</div>
+                    <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)", fontSize: 10 }}>{label}</div>
                   </div>
                 </div>
               ))}
