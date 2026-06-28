@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const PUBLIC_ROUTES = ["/", "/signup", "/login"];
 const AUTH_ROUTES   = ["/signup", "/login"];
+const ADMIN_ROUTES  = ["/admin"];
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
