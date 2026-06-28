@@ -144,11 +144,11 @@ export default function HeroSection() {
           {/* ── RIGHT: Globe image ── */}
           <div className="relative hidden lg:flex items-center justify-center">
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, x: 40 }}
+              initial={{ opacity: 0, scale: 0.92, x: 30 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full"
-              style={{ maxWidth: 680 }}
+              transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="relative"
+              style={{ width: "115%", marginRight: "-8%" }}
             >
               <Image
                 src="/images/hero-globe.png"
@@ -159,12 +159,10 @@ export default function HeroSection() {
                 priority
                 className="w-full h-auto"
                 style={{
-                  /* Fade left edge into page background */
-                  maskImage:
-                    "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 15%, black 35%, black 100%)",
-                  WebkitMaskImage:
-                    "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 15%, black 35%, black 100%)",
-                  filter: "drop-shadow(0 0 60px rgba(106,13,173,0.25))",
+                  /* screen blend: black bg disappears, globe floats in 3D */
+                  mixBlendMode: "screen",
+                  filter:
+                    "drop-shadow(0 0 80px rgba(255,180,50,0.3)) drop-shadow(0 0 40px rgba(106,13,173,0.4))",
                 }}
               />
 
