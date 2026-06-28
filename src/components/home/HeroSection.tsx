@@ -4,13 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Users, Shield, Zap } from "lucide-react";
 
-const stats = [
-  { icon: Users,  label: "Inclusive",     value: "All Sexualities" },
-  { icon: MapPin, label: "Location-Aware", value: "Live Map" },
-  { icon: Shield, label: "Privacy-First",  value: "Stealth Mode" },
-  { icon: Zap,    label: "Passport Mode",  value: "Travel Ready" },
-];
-
 const identities = [
   "Straight", "Gay", "Lesbian", "Bisexual", "Pansexual",
   "Trans", "Non-binary", "Queer", "Asexual", "Demisexual",
@@ -18,206 +11,228 @@ const identities = [
 
 export default function HeroSection() {
   return (
-    <section
-      className="relative flex flex-col overflow-hidden mesh-bg"
-      style={{ minHeight: "calc(100svh - 64px)", paddingTop: 64 }}
-    >
-      {/* ── Globe image — full bleed background ── */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden>
-        <Image
-          src="/images/hero-globe.png"
-          alt=""
-          fill
-          priority
-          quality={100}
-          sizes="100vw"
-          className="object-cover"
-          style={{ objectPosition: "68% center" }}
-        />
+    <section className="relative min-h-screen flex items-center overflow-hidden mesh-bg">
 
-        {/* Mobile: strong dark overlay so text stays legible */}
-        <div
-          className="absolute inset-0 lg:hidden"
-          style={{ background: "rgba(9,9,15,0.72)" }}
-        />
+      {/* Subtle radial glow top-right */}
+      <div
+        className="absolute top-0 right-0 w-[700px] h-[500px] pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at top right, rgba(106,13,173,0.18) 0%, transparent 65%)" }}
+      />
+      <div
+        className="absolute bottom-0 left-0 w-[500px] h-[300px] pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at bottom left, rgba(194,24,91,0.1) 0%, transparent 70%)" }}
+      />
 
-        {/* Desktop: gradient — solid dark left → fades → globe visible right */}
-        <div
-          className="absolute inset-0 hidden lg:block"
-          style={{
-            background:
-              "linear-gradient(to right, #09090F 0%, #09090F 28%, rgba(9,9,15,0.85) 44%, rgba(9,9,15,0.3) 60%, transparent 76%)",
-          }}
-        />
+      {/* ── Main grid ── */}
+      <div className="relative w-full max-w-7xl mx-auto px-5 sm:px-8 pt-28 pb-32 lg:pt-32 lg:pb-36 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-        {/* Top + bottom fade */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to bottom, #09090F 0%, transparent 10%, transparent 86%, #09090F 100%)",
-          }}
-        />
+        {/* LEFT — Text */}
+        <div className="order-1">
 
-        {/* PRISM brand tint over globe */}
-        <div
-          className="absolute inset-0 hidden lg:block"
-          style={{
-            background:
-              "linear-gradient(135deg, transparent 38%, rgba(106,13,173,0.15) 58%, rgba(194,24,91,0.1) 76%, transparent 100%)",
-          }}
-        />
+          {/* Live pill */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-7 w-fit"
+            style={{
+              background: "rgba(19,19,31,0.8)",
+              border: "1px solid var(--border)",
+              color: "var(--text-muted)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: "var(--prism-cyan)", boxShadow: "0 0 6px var(--prism-cyan)" }}
+            />
+            Now live in Nigeria &amp; United Kingdom
+            <span className="gradient-text font-semibold ml-1">· Join free →</span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="font-bold leading-[1.06] tracking-tight mb-6"
+            style={{
+              fontFamily: "Space Grotesk, sans-serif",
+              fontSize: "clamp(2.8rem, 5.5vw, 4.8rem)",
+            }}
+          >
+            Every Color.<br />
+            <span className="gradient-text">Every Person.</span><br />
+            One Platform.
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-6 leading-relaxed max-w-lg"
+            style={{ color: "var(--text-muted)", fontSize: "clamp(1rem, 1.5vw, 1.1rem)" }}
+          >
+            A social dating platform built for all sexualities. Post, connect,
+            go live, and discover people near you — or in your next destination.
+          </motion.p>
+
+          {/* Identity pills */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.38 }}
+            className="flex flex-wrap gap-2 mb-8"
+          >
+            {identities.map((id) => (
+              <span
+                key={id}
+                className="text-xs px-3 py-1 rounded-full"
+                style={{
+                  background: "rgba(19,19,31,0.7)",
+                  border: "1px solid var(--border)",
+                  color: "var(--text-muted)",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                {id}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="flex flex-col sm:flex-row gap-3 mb-10"
+          >
+            <Link href="/signup" className="btn-primary text-sm font-semibold px-8 py-3.5 animate-pulse-glow text-center">
+              Start 7-Day Free Trial
+            </Link>
+            <Link href="/discover" className="btn-outline text-sm px-8 py-3.5 text-center">
+              Browse the Map
+            </Link>
+          </motion.div>
+
+          {/* Trust badges */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center gap-6 flex-wrap"
+          >
+            {[
+              { icon: Shield, text: "Privacy-first" },
+              { icon: Zap,    text: "Stealth mode" },
+              { icon: MapPin, text: "Live location" },
+              { icon: Users,  text: "All sexualities" },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-2 text-sm" style={{ color: "var(--text-muted)" }}>
+                <Icon size={13} style={{ color: "var(--prism-magenta)" }} />
+                <span>{text}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* RIGHT — Globe image (contained) */}
+        <motion.div
+          initial={{ opacity: 0, x: 32 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2, duration: 0.7 }}
+          className="relative order-2"
+        >
+          {/* Image container */}
+          <div
+            className="relative overflow-hidden rounded-2xl lg:rounded-r-none lg:rounded-l-2xl"
+            style={{ aspectRatio: "4/3" }}
+          >
+            <Image
+              src="/images/hero-globe.png"
+              alt="Globe made of people — PRISM community"
+              fill
+              priority
+              quality={100}
+              className="object-cover"
+              style={{ objectPosition: "55% center" }}
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+
+            {/* Left blend — melts into dark page background */}
+            <div
+              className="absolute inset-y-0 left-0 w-2/5 pointer-events-none z-10"
+              style={{ background: "linear-gradient(to right, var(--bg-primary), rgba(9,9,15,0.55) 60%, transparent)" }}
+            />
+            {/* Top blend */}
+            <div
+              className="absolute top-0 left-0 right-0 h-28 pointer-events-none z-10"
+              style={{ background: "linear-gradient(to bottom, var(--bg-primary), transparent)" }}
+            />
+            {/* Bottom blend */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none z-10"
+              style={{ background: "linear-gradient(to top, var(--bg-primary), transparent)" }}
+            />
+            {/* Right edge blend */}
+            <div
+              className="absolute inset-y-0 right-0 w-16 pointer-events-none z-10"
+              style={{ background: "linear-gradient(to left, var(--bg-primary), transparent)" }}
+            />
+          </div>
+
+          {/* Floating: 500+ Online Now */}
+          <motion.div
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.9 }}
+            className="hidden lg:flex absolute top-5 right-6 glass rounded-2xl px-4 py-2.5 items-center gap-2 z-20"
+          >
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-xs font-semibold">500+ Online Now</span>
+          </motion.div>
+
+          {/* Floating: New match nearby */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0 }}
+            className="hidden lg:block absolute bottom-6 right-6 glass rounded-2xl px-4 py-3 z-20"
+          >
+            <div className="text-xs font-semibold gradient-text">✨ New match nearby</div>
+            <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>2km away · Lagos</div>
+          </motion.div>
+        </motion.div>
       </div>
 
-      {/* ── Content ── */}
-      <div className="relative z-10 flex-1 flex items-center w-full max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="w-full grid lg:grid-cols-2 gap-8 items-center py-8">
-
-          {/* LEFT — Text column */}
-          <div className="flex flex-col justify-center">
-
-            {/* Live pill */}
+      {/* ── Stats bar (pinned to bottom, like WeAccommodate) ── */}
+      <div
+        className="absolute bottom-0 left-0 right-0 border-t"
+        style={{ background: "rgba(9,9,15,0.7)", backdropFilter: "blur(12px)", borderColor: "var(--border)" }}
+      >
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 grid grid-cols-2 md:grid-cols-4 divide-x"
+          style={{ divideColor: "var(--border-subtle)" } as React.CSSProperties}
+        >
+          {[
+            { value: "10+",    label: "Sexuality Groups" },
+            { value: "2 Countries", label: "Nigeria & UK" },
+            { value: "Stealth Mode", label: "Private Browsing" },
+            { value: "7-Day Free",   label: "Trial — No Risk" },
+          ].map((stat, i) => (
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
+              key={stat.label}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium mb-6 w-fit"
-              style={{
-                background: "rgba(19,19,31,0.8)",
-                border: "1px solid var(--border)",
-                color: "var(--text-muted)",
-                backdropFilter: "blur(10px)",
-              }}
+              transition={{ delay: 0.55 + i * 0.08 }}
+              className="text-center px-3 sm:px-6 py-1"
             >
-              <span
-                className="w-1.5 h-1.5 rounded-full animate-pulse"
-                style={{ background: "var(--prism-cyan)", boxShadow: "0 0 6px var(--prism-cyan)" }}
-              />
-              Now live in Nigeria &amp; United Kingdom
-              <span className="gradient-text font-semibold ml-1">· Join free →</span>
+              <p className="font-bold text-lg sm:text-xl gradient-text" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+                {stat.value}
+              </p>
+              <p className="text-xs mt-0.5 tracking-wide" style={{ color: "var(--text-muted)" }}>{stat.label}</p>
             </motion.div>
-
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.08 }}
-              className="font-bold leading-[1.08] tracking-tight mb-5"
-              style={{
-                fontFamily: "Space Grotesk, sans-serif",
-                fontSize: "clamp(2.6rem, 5.5vw, 4.5rem)",
-              }}
-            >
-              Every Color.<br />
-              <span className="gradient-text">Every Person.</span><br />
-              One Platform.
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.16 }}
-              className="mb-5 leading-relaxed"
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)",
-                maxWidth: "38rem",
-              }}
-            >
-              A social dating platform built for all sexualities. Post, connect,
-              go live, and discover people near you — or in your next destination.
-            </motion.p>
-
-            {/* Identity pills */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.24 }}
-              className="flex flex-wrap gap-2 mb-7"
-            >
-              {identities.map((id) => (
-                <span
-                  key={id}
-                  className="text-xs px-3 py-1 rounded-full"
-                  style={{
-                    background: "rgba(19,19,31,0.7)",
-                    border: "1px solid var(--border)",
-                    color: "var(--text-muted)",
-                    backdropFilter: "blur(8px)",
-                  }}
-                >
-                  {id}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-3 mb-9"
-            >
-              <Link href="/signup" className="btn-primary text-sm font-semibold px-7 py-3 animate-pulse-glow text-center">
-                Start 7-Day Free Trial
-              </Link>
-              <Link href="/discover" className="btn-outline text-sm px-7 py-3 text-center">
-                Browse the Map
-              </Link>
-            </motion.div>
-
-            {/* Stat cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.4 }}
-              className="grid grid-cols-2 gap-2.5"
-            >
-              {stats.map(({ icon: Icon, label, value }) => (
-                <div
-                  key={label}
-                  className="prism-card p-3.5 flex items-center gap-3"
-                  style={{ backdropFilter: "blur(14px)", background: "rgba(19,19,31,0.7)" }}
-                >
-                  <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: "var(--gradient-subtle)" }}
-                  >
-                    <Icon size={14} style={{ color: "var(--prism-magenta)" }} />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm leading-tight">{value}</div>
-                    <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{label}</div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* RIGHT — floating badges (desktop only) */}
-          <div className="relative hidden lg:block h-full min-h-[480px]">
-            <motion.div
-              initial={{ opacity: 0, x: 18 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              className="absolute top-8 right-4 glass rounded-2xl px-4 py-2.5 flex items-center gap-2"
-            >
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-xs font-semibold">500+ Online Now</span>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: -18 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.88 }}
-              className="absolute bottom-16 left-4 glass rounded-2xl px-4 py-2.5"
-            >
-              <div className="text-xs font-semibold gradient-text">✨ New match nearby</div>
-              <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>2km away · Lagos</div>
-            </motion.div>
-          </div>
-
+          ))}
         </div>
       </div>
     </section>
