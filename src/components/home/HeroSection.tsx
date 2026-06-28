@@ -159,10 +159,8 @@ export default function HeroSection() {
                 priority
                 className="w-full h-auto"
                 style={{
-                  /* screen blend: black bg disappears, globe floats in 3D */
-                  mixBlendMode: "screen",
                   filter:
-                    "drop-shadow(0 0 80px rgba(255,180,50,0.3)) drop-shadow(0 0 40px rgba(106,13,173,0.4))",
+                    "drop-shadow(0 0 80px rgba(255,180,50,0.35)) drop-shadow(0 0 50px rgba(106,13,173,0.45))",
                 }}
               />
 
