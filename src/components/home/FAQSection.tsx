@@ -134,7 +134,7 @@ export default function FAQSection() {
             style={{ minHeight: 380 }}
           >
             <Image
-              src="/images/hero-globe.png"
+              src="/images/globe-faq.png"
               alt="PRISM global community"
               fill
               quality={100}
