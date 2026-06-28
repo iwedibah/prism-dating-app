@@ -3,9 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const PUBLIC_ROUTES = ["/", "/signup", "/login"];
 const AUTH_ROUTES   = ["/signup", "/login"];
-const ADMIN_ROUTES  = ["/admin"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -28,13 +27,14 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const path = request.nextUrl.pathname;
 
-  // Logged-in users shouldn't see login/signup
+  // Logged-in users skip login/signup → go to feed
   if (user && AUTH_ROUTES.some(r => path.startsWith(r))) {
     return NextResponse.redirect(new URL("/feed", request.url));
   }
 
   // Protected routes require auth
-  const isPublic = PUBLIC_ROUTES.some(r => path === r) ||
+  const isPublic =
+    PUBLIC_ROUTES.some(r => path === r) ||
     path.startsWith("/_next") || path.startsWith("/images") ||
     path.startsWith("/api") || path.includes(".");
   if (!user && !isPublic) {

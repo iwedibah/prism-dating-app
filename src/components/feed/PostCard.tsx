@@ -96,7 +96,7 @@ export default function PostCard({
             <div className="flex items-center gap-1.5">
               <p className="text-sm font-semibold">{post.profiles?.full_name || "User"}</p>
               {(post.profiles as any)?.subscribed && (
-                <Crown size={12} style={{ color: "#FFD700", flexShrink: 0 }} title="Premium member" />
+                <span title="Premium member"><Crown size={12} style={{ color: "#FFD700", flexShrink: 0 }} /></span>
               )}
             </div>
             <p className="text-xs" style={{ color: "var(--text-muted)" }}>
