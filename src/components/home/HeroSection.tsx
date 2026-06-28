@@ -20,7 +20,7 @@ export default function HeroSection() {
   return (
     <section
       className="relative flex flex-col overflow-hidden mesh-bg"
-      style={{ height: "88svh", minHeight: 580, maxHeight: 880, paddingTop: 64 }}
+      style={{ minHeight: "calc(100svh - 64px)", paddingTop: 64 }}
     >
       {/* ── Globe image — full bleed background ── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden>
